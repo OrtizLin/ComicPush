@@ -162,6 +162,13 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 
 		user := User{}
 		user.UserID = source.UserID
+
+		session, errs := mgo.Dial(os.Getenv("DBURL"))
+		if errs != nil {
+			panic(errs)
+		}
+		defer session.Close()
+		collect := session.DB("xtest").C("commicuser")
 		errs = collect.Insert(&User{user.UserID})
 		if errs != nil {
 			log.Fatal(errs)
