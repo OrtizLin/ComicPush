@@ -158,18 +158,9 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
 	default:
-		
-	defer session.Close()
-	c := session.DB("xtest").C("comicuser")
-	user := User{}
-	user.UserToken = source.UserID
-	errs = collect.Insert(&User{user.UserToken})
-	if errs != nil {
-		log.Fatal(errs)
-	} else {
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("恭喜！您已訂閱連載報報,若有新的連載發行將會第一時間通知您！"),
+			linebot.NewTextMessage("測試123"+source.UserID),
 		).Do(); err != nil {
 			return err
 		}
@@ -177,7 +168,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 	if errs != nil {
 		panic(errs)
 	}
-		}
+	
 	return nil
 
 }
