@@ -47,7 +47,15 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 //wake up heroku server
 func WakeUp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
-	if _, err := bot.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
+	app, err := NewLineBot(
+		os.Getenv("ChannelSecret"),
+		os.Getenv("ChannelAccessToken"),
+		os.Getenv("APP_BASE_URL"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := app.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
 	}
 }
 
