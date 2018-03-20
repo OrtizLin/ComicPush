@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "jtE6u2rGtrgvbeqmBG7uRWG9E8E=",
+			"path": "github.com/PuerkitoBio/goquery",
+			"revision": "61aa1975b1f7856927c526b0e0cd8c8b3a3030d0",
+			"revisionTime": "2018-03-13T22:36:54Z"
+		},
+		{
+			"checksumSHA1": "Q/2QpI7E35SsNYfaxLsWHFry9k4=",
+			"path": "github.com/andybalholm/cascadia",
+			"revision": "901648c87902174f774fac311d7f176f8647bdaa",
+			"revisionTime": "2018-02-20T18:43:36Z"
+		},
+		{
+			"checksumSHA1": "L68uqaYKEOxkq2xwnNV2bRP7yO4=",
+			"path": "golang.org/x/net/html",
+			"revision": "6078986fec03a1dcc236c34816c71b0e05018fda",
+			"revisionTime": "2017-09-09T04:35:08Z"
+		},
+		{
+			"checksumSHA1": "NvlH++AI8+25Z2Vs8WKxLVCNrxo=",
+			"path": "golang.org/x/net/html/atom",
+			"revision": "6078986fec03a1dcc236c34816c71b0e05018fda",
+			"revisionTime": "2017-09-09T04:35:08Z"
+		}
+	],
+	"rootPath": "ComicNotify"
+}
