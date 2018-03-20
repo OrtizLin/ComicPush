@@ -51,9 +51,8 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 //wake up heroku server
 func WakeUp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
-	SendMessage()
 }
-func SendMessage() {
+func SendMessage(message string) {
 	app, err := NewLineBot(
 		os.Getenv("ChannelSecret"),
 		os.Getenv("ChannelAccessToken"),
@@ -72,7 +71,7 @@ func SendMessage() {
 	result := User{}
 	iter := c.Find(nil).Iter()
 	for iter.Next(&result) {
-		if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage("hello")).Do(); err != nil {
+		if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage(message)).Do(); err != nil {
 		}
 	}
 
@@ -96,7 +95,8 @@ func FindUpdate() []NewComic {
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" {
 				date := s.Find("span.dt").Find("em").Text()
-				if date == time.Format("2016-01-02") {
+				// if date == time.Format("2016-01-02") {
+				if date == "2018-03-17"
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
@@ -138,6 +138,7 @@ func CrawlAndSend() {
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
 		if err != nil {
 			c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
+			SendMessage(comics[i].Title + "\n" + comics[i].Link)
 		} else {
 			log.Println("EXIST ALREADY")
 		}
@@ -226,4 +227,5 @@ func main() {
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
+	CrawlAndSend()
 }
