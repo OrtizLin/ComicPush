@@ -47,6 +47,8 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 //wake up heroku server
 func WakeUp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
+	if _, err := bot.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
+	}
 }
 
 func FindUpdate() []NewComic {
@@ -98,7 +100,7 @@ func GetLink(link string) (r string) {
 
 }
 func CrawlAndSend() {
-	session, errs := mgo.Dial("DBURL")
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
 	}
