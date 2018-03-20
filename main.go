@@ -91,13 +91,13 @@ func FindUpdate() []NewComic {
 
 	doc.Find("li").Each(func(i int, s *goquery.Selection) {
 		comic := NewComic{}
-		title, existed := s.Find("a.cover").Attr("title")
+		titles, existed := s.Find("a.cover").Attr("title")
 		if existed {
-			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" {
+			if titles == "约定的梦幻岛" || titles == "一拳超人" || titles == "进击的巨人" || titles == "ONE PIECE航海王" || titles == "Dr.STONE" {
 				date := s.Find("span.dt").Find("em").Text()
 				// if date == time.Format("2016-01-02") {
 				if date == "2018-03-17"
-					comic.Title = title
+					comic.Title = titles
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
 					comic.Link = GetLink(href)
