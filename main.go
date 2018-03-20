@@ -55,7 +55,7 @@ func WakeUp(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := app.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
+	if _, err := app.bot.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
 	}
 }
 
