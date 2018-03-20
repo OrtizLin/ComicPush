@@ -27,6 +27,9 @@ type NewComic struct {
 	Date  string
 }
 
+type User struct {
+	UserToken string
+}
 // NewLineBot function
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error) {
 	bot, err := linebot.New(
@@ -155,13 +158,26 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
 	default:
+		
+	defer session.Close()
+	c := session.DB("xtest").C("comicuser")
+	user := User{}
+	user.UserToken = source.UserID
+	errs = collect.Insert(&User{user.UserToken})
+	if errs != nil {
+		log.Fatal(errs)
+	} else {
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("測試123"+source.UserID),
+			linebot.NewTextMessage("恭喜！您已訂閱連載報報,若有新的連載發行將會第一時間通知您！"),
 		).Do(); err != nil {
 			return err
 		}
+		session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
 	}
+		}
 	return nil
 
 }
