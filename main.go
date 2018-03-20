@@ -137,6 +137,7 @@ func CrawlAndSend() {
 		result := comics[i]
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
 		if err != nil {
+			log.Println("Insert succseful")
 			c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
 			SendMessage(comics[i].Title + "\n" + comics[i].Link)
 		} else {
