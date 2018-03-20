@@ -78,6 +78,7 @@ func SendMessage(message string) {
 }
 func FindUpdate() []NewComic {
 	//today's date
+	log.Println("STARTING CRAWLER ...")
 	loc, _ := time.LoadLocation("Asia/Chongqing")
 	time := time.Now().In(loc)
 	log.Println(time.Format("2006-01-02"))
@@ -87,6 +88,7 @@ func FindUpdate() []NewComic {
 	doc, err := goquery.NewDocument(BaseAddress + "/update")
 	if err != nil {
 		log.Fatal(err)
+		log.Println("ERROR SHOWS UP")
 	}
 
 	doc.Find("li").Each(func(i int, s *goquery.Selection) {
@@ -127,8 +129,8 @@ func GetLink(link string) (r string) {
 
 //wake up heroku server
 func GoCrawler(w http.ResponseWriter, r *http.Request) {
+	CrawlAndSend()
 	fmt.Fprintln(w, "Go Crawler")
-	log.Println("GOGOCRAWLER")
 }
 func CrawlAndSend() {
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
