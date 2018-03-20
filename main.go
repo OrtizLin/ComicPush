@@ -131,7 +131,6 @@ func GoCrawler(w http.ResponseWriter, r *http.Request) {
 	CrawlAndSend()
 }
 func CrawlAndSend() {
-	fmt.Fprintln(w, "GO CRAWLER")
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
