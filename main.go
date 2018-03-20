@@ -106,7 +106,6 @@ func FindUpdate() []NewComic {
 			}
 		}
 	})
-	log.Println(comics)
 	return comics
 
 }
@@ -127,7 +126,6 @@ func GetLink(link string) (r string) {
 
 }
 func CrawlAndSend() {
-	log.Println("START CRAWL")
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
@@ -139,7 +137,6 @@ func CrawlAndSend() {
 		result := comics[i]
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
 		if err != nil {
-			log.Println("Insert succseful")
 			c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
 			SendMessage(comics[i].Title + "\n" + comics[i].Link)
 		} else {
@@ -176,6 +173,9 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 }
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
+	case "hello":
+
+		CrawlAndSend()
 	default:
 
 		user := User{}
@@ -230,5 +230,4 @@ func main() {
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
-	CrawlAndSend()
 }
