@@ -27,6 +27,10 @@ type NewComic struct {
 	Date  string
 }
 
+type User struct {
+	UserID string
+}
+
 // NewLineBot function
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error) {
 	bot, err := linebot.New(
@@ -155,12 +159,21 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
 	default:
-		// if _, err := app.bot.ReplyMessage(
-		// 	replyToken,
-		// 	linebot.NewTextMessage("測試123"+source.UserID),
-		// ).Do(); err != nil {
-		// 	return err
-		// }
+
+		user := User{}
+		user.UserID = source.UserID
+		errs = collect.Insert(&User{user.UserID})
+		if errs != nil {
+			log.Fatal(errs)
+		} else {
+			if _, err := app.bot.ReplyMessage(
+				replyToken,
+				linebot.NewTextMessage("恭喜您已訂閱連載報報,當有最新連載發行時將會第一時間通知您！"),
+			).Do(); err != nil {
+				return err
+			}
+		}
+
 	}
 	return nil
 
