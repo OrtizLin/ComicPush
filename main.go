@@ -124,7 +124,9 @@ func GetLink(link string) (r string) {
 	return r
 
 }
-func CrawlAndSend() {
+
+func CrawlAndSend(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "GO CRAWLER")
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
