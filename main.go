@@ -68,8 +68,7 @@ func FindUpdate() []NewComic {
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" {
 				date := s.Find("span.dt").Find("em").Text()
-				// if date == time.Format("2016-01-02") {
-				if date == "2018-03-17" {
+				if date == time.Format("2016-01-02") {
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
@@ -99,7 +98,7 @@ func GetLink(link string) (r string) {
 
 }
 func CrawlAndSend() {
-	session, errs := mgo.Dial("mongodb://ortiz:55688a@ds253468.mlab.com:53468/xtest")
+	session, errs := mgo.Dial("DBURL")
 	if errs != nil {
 		panic(errs)
 	}
