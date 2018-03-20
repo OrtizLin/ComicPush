@@ -51,6 +51,8 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 //wake up heroku server
 func WakeUp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
+}
+func SendMessage() {
 	app, err := NewLineBot(
 		os.Getenv("ChannelSecret"),
 		os.Getenv("ChannelAccessToken"),
@@ -59,10 +61,9 @@ func WakeUp(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := app.bot.PushMessage(os.Getenv("UserID"), linebot.NewTextMessage("hello")).Do(); err != nil {
+	if _, err := app.bot.PushMessage("123", linebot.NewTextMessage("hello")).Do(); err != nil {
 	}
 }
-
 func FindUpdate() []NewComic {
 	//today's date
 	loc, _ := time.LoadLocation("Asia/Chongqing")
@@ -168,14 +169,27 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 			panic(errs)
 		}
 		defer session.Close()
-		collect := session.DB("xtest").C("commicuser")
-		errs = collect.Insert(&User{user.UserID})
-		if errs != nil {
-			log.Fatal(errs)
+		c := session.DB("xtest").C("commicuser")
+
+		//check if userId exist.
+		err := c.Find(bson.M{"userid": user.UserID}).One(&user)
+		if err != nil {
+			errs = c.Insert(&User{user.UserID})
+			if errs != nil {
+				log.Fatal(errs)
+			} else {
+				if _, err := app.bot.ReplyMessage(
+					replyToken,
+					linebot.NewTextMessage("恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"),
+				).Do(); err != nil {
+					return err
+				}
+			}
 		} else {
+			log.Println("This UserID already push")
 			if _, err := app.bot.ReplyMessage(
 				replyToken,
-				linebot.NewTextMessage("恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"),
+				linebot.NewTextMessage("您已經訂閱囉！"),
 			).Do(); err != nil {
 				return err
 			}
