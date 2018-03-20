@@ -95,8 +95,7 @@ func FindUpdate() []NewComic {
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" {
 				date := s.Find("span.dt").Find("em").Text()
-				// if date == time.Format("2016-01-02") {
-				if date == "2018-03-17" {
+				if date == time.Format("2016-01-02") {
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
@@ -173,8 +172,7 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 }
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
-	case "hello":
-
+	case "tonygrr":
 		CrawlAndSend()
 	default:
 
@@ -227,6 +225,7 @@ func main() {
 	}
 	http.HandleFunc("/wakeup", WakeUp)
 	http.HandleFunc("/callback", app.Callback)
+	http.HandleFunc("/gocrawl", CrawlAndSend)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
