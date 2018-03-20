@@ -128,7 +128,7 @@ func GetLink(link string) (r string) {
 //wake up heroku server
 func GoCrawler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Go Crawler")
-	CrawlAndSend()
+	log.Println("GOGOCRAWLER")
 }
 func CrawlAndSend() {
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
