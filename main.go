@@ -175,7 +175,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		} else {
 			if _, err := app.bot.ReplyMessage(
 				replyToken,
-				linebot.NewTextMessage("恭喜您已訂閱連載報報,當有最新連載發行時將會第一時間通知您！"),
+				linebot.NewTextMessage("恭喜您已訂閱連載報報.\n當有最新連載發行時將會第一時間通知您！"),
 			).Do(); err != nil {
 				return err
 			}
