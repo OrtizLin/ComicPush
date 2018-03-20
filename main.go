@@ -27,9 +27,6 @@ type NewComic struct {
 	Date  string
 }
 
-type User struct {
-	UserToken string
-}
 // NewLineBot function
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error) {
 	bot, err := linebot.New(
@@ -164,11 +161,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		).Do(); err != nil {
 			return err
 		}
-		session, errs := mgo.Dial(os.Getenv("DBURL"))
-	if errs != nil {
-		panic(errs)
 	}
-	
 	return nil
 
 }
