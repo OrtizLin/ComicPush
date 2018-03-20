@@ -155,12 +155,12 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
 	default:
-		if _, err := app.bot.ReplyMessage(
-			replyToken,
-			linebot.NewTextMessage("測試123"+source.UserID),
-		).Do(); err != nil {
-			return err
-		}
+		// if _, err := app.bot.ReplyMessage(
+		// 	replyToken,
+		// 	linebot.NewTextMessage("測試123"+source.UserID),
+		// ).Do(); err != nil {
+		// 	return err
+		// }
 	}
 	return nil
 
