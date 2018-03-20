@@ -157,7 +157,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 	default:
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("測試123"+source),
+			linebot.NewTextMessage("測試123"+source.userID),
 		).Do(); err != nil {
 			return err
 		}
