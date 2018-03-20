@@ -125,7 +125,12 @@ func GetLink(link string) (r string) {
 
 }
 
-func CrawlAndSend(w http.ResponseWriter, r *http.Request) {
+//wake up heroku server
+func GoCrawler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Go Crawler")
+	CrawlAndSend()
+}
+func CrawlAndSend() {
 	fmt.Fprintln(w, "GO CRAWLER")
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
@@ -227,7 +232,7 @@ func main() {
 	}
 	http.HandleFunc("/wakeup", WakeUp)
 	http.HandleFunc("/callback", app.Callback)
-	http.HandleFunc("/gocrawl", CrawlAndSend)
+	http.HandleFunc("/gocrawl", GoCrawler)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
