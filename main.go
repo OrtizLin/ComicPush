@@ -51,6 +51,7 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 //wake up heroku server
 func WakeUp(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
+	SendMessage()
 }
 func SendMessage() {
 	app, err := NewLineBot(
@@ -61,8 +62,20 @@ func SendMessage() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := app.bot.PushMessage("123", linebot.NewTextMessage("hello")).Do(); err != nil {
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
 	}
+	defer session.Close()
+	c := session.DB("xtest").C("commicuser")
+
+	result := User{}
+	iter := c.Find(nil).Iter()
+	for iter.Next(&result) {
+		if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage("hello")).Do(); err != nil {
+		}
+	}
+
 }
 func FindUpdate() []NewComic {
 	//today's date
@@ -186,7 +199,6 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 				}
 			}
 		} else {
-			log.Println("This UserID already push")
 			if _, err := app.bot.ReplyMessage(
 				replyToken,
 				linebot.NewTextMessage("您已經訂閱囉！"),
