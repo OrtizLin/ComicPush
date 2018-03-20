@@ -106,6 +106,7 @@ func FindUpdate() []NewComic {
 			}
 		}
 	})
+	log.Println(comics)
 	return comics
 
 }
@@ -126,6 +127,7 @@ func GetLink(link string) (r string) {
 
 }
 func CrawlAndSend() {
+	log.Println("START CRAWL")
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
