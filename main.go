@@ -14,6 +14,8 @@ import (
 
 const BaseAddress = "http://www.manhuagui.com"
 
+var count uint64
+
 // line_bot app
 type LineBot struct {
 	bot         *linebot.Client
