@@ -109,8 +109,10 @@ func FindUpdate() []NewComic {
 		title, existed := s.Find("a.cover").Attr("title")
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
+				fmt.Println("找到關於 " + title + " 的資料")
 				date := s.Find("span.dt").Find("em").Text()
 				if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
+					fmt.Println(title + "在近日內有更新！！")
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
