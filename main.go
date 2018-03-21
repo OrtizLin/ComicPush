@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -153,7 +154,7 @@ func CrawlAndSend() {
 	defer session.Close()
 	c := session.DB("xtest").C("commicdata")
 	var comics = FindUpdate()
-	log.Println("查到" + len(comics) + "筆資料")
+	log.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
 	for i := 0; i < len(comics); i++ {
 		result := comics[i]
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
