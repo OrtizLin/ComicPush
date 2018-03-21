@@ -79,7 +79,12 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
 	case "tonygrr":
-		CrawlAndSend()
+		if _, err := app.bot.ReplyMessage(
+			replyToken,
+			linebot.NewTextMessage("嫩！"),
+		).Do(); err != nil {
+			return err
+		}
 	default:
 
 		user := User{}
