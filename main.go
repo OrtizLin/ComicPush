@@ -161,7 +161,7 @@ func CrawlAndSent() {
 		doc, err := goquery.NewDocument(queryString)
 		if err != nil {
 			fmt.Println("ERROR SHOWS UP")
-			fmt.Println(err)
+			log.Fatal(err)
 			BOOL = false
 		} else {
 			doc.Find("li").Each(func(i int, s *goquery.Selection) {
