@@ -204,7 +204,7 @@ func CrawlAndSent() {
 				result := User{}
 				iter := c2.Find(nil).Iter()
 				for iter.Next(&result) {
-					message := comics[i]title +"\n"+ comics[i].Link
+					message := comics[i].Title + "\n" + comics[i].Link
 					if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage(message)).Do(); err != nil {
 					}
 				}
