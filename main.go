@@ -97,7 +97,8 @@ func FindUpdate() []NewComic {
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
 				date := s.Find("span.dt").Find("em").Text()
-				if date == time.Format("2016-01-02") {
+				// if date == time.Format("2016-01-02") {
+				if date == "2018-03-20" {
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
