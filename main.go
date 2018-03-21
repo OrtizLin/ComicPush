@@ -62,7 +62,7 @@ func SendMessage(message string) {
 		os.Getenv("APP_BASE_URL"),
 	)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
@@ -81,27 +81,27 @@ func SendMessage(message string) {
 }
 func FindUpdate() []NewComic {
 	//today's date
-	log.Println("STARTING CRAWLER ...")
+	fmt.Println("STARTING CRAWLER ...")
 	now := time.Now()
 	local1, err1 := time.LoadLocation("")
 	if err1 != nil {
-		log.Println(err1)
+		fmt.Println(err1)
 	}
 	local2, err2 := time.LoadLocation("Asia/Chongqing")
 	if err2 != nil {
-		log.Println(err2)
+		fmt.Println(err2)
 	}
 	time_one := now.In(local1)
 	time_two := now.In(local2)
-	log.Println(time_one.Format("2006-01-02 15:04:05"))
-	log.Println(time_two.Format("2006-01-02 15:04:05"))
+	fmt.Println(time_one.Format("2006-01-02 15:04:05"))
+	fmt.Println(time_two.Format("2006-01-02 15:04:05"))
 
 	var comics []NewComic
 
 	doc, err := goquery.NewDocument(BaseAddress + "/update")
 	if err != nil {
-		log.Fatal(err)
-		log.Println("ERROR SHOWS UP")
+		fmt.Println(err)
+		fmt.Println("ERROR SHOWS UP")
 	}
 
 	doc.Find("li").Each(func(i int, s *goquery.Selection) {
@@ -127,7 +127,7 @@ func FindUpdate() []NewComic {
 func GetLink(link string) (r string) {
 	doc, err := goquery.NewDocument(BaseAddress + link)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 
 	doc.Find("li.status").Each(func(i int, s *goquery.Selection) {
@@ -154,7 +154,7 @@ func CrawlAndSend() {
 	defer session.Close()
 	c := session.DB("xtest").C("commicdata")
 	var comics = FindUpdate()
-	log.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
+	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
 	for i := 0; i < len(comics); i++ {
 		result := comics[i]
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
@@ -162,7 +162,7 @@ func CrawlAndSend() {
 			c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
 			SendMessage(comics[i].Title + "\n" + comics[i].Link)
 		} else {
-			log.Println("EXIST ALREADY")
+			fmt.Println("EXIST ALREADY")
 		}
 	}
 }
@@ -214,7 +214,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		if err != nil {
 			errs = c.Insert(&User{user.UserID})
 			if errs != nil {
-				log.Fatal(errs)
+				fmt.Println(err)
 			} else {
 				if _, err := app.bot.ReplyMessage(
 					replyToken,
@@ -244,12 +244,14 @@ func main() {
 		os.Getenv("APP_BASE_URL"),
 	)
 	if err != nil {
-		log.Fatal(err)
+
+		fmt.Println(err)
 	}
 	go countUpdater()
 	http.HandleFunc("/wakeup", WakeUp)
 	http.HandleFunc("/callback", app.Callback)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
-		log.Fatal(err)
+
+		fmt.Println(err)
 	}
 }
