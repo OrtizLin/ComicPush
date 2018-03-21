@@ -153,6 +153,7 @@ func CrawlAndSend() {
 	defer session.Close()
 	c := session.DB("xtest").C("commicdata")
 	var comics = FindUpdate()
+	log.Printf("查到 %i 筆資料", len(comics))
 	for i := 0; i < len(comics); i++ {
 		result := comics[i]
 		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
@@ -245,7 +246,6 @@ func main() {
 		log.Fatal(err)
 	}
 	go countUpdater()
-
 	http.HandleFunc("/wakeup", WakeUp)
 	http.HandleFunc("/callback", app.Callback)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
