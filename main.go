@@ -159,6 +159,7 @@ func CrawlAndSent() {
 			queryString = BaseAddress + "/list/update_p" + strconv.Itoa(pageCount) + ".html"
 		}
 		doc, err := goquery.NewDocument(queryString)
+		doc.Header.Add("Referer", "http://www.abc.com")
 		if err != nil {
 			fmt.Println("ERROR SHOWS UP")
 			log.Fatal(err)
