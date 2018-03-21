@@ -187,6 +187,7 @@ func CrawlAndSent() {
 				}
 			})
 		}
+
 		pageCount = pageCount + 1
 	}
 
