@@ -17,7 +17,6 @@ const BaseAddress = "http://www.manhuagui.com"
 
 var count uint64
 
-// line_bot app
 type LineBot struct {
 	bot         *linebot.Client
 	appBaseURL  string
@@ -34,7 +33,7 @@ type User struct {
 	UserID string
 }
 
-// NewLineBot function
+/*Line bot*/
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error) {
 	bot, err := linebot.New(
 		channelSecret,
@@ -49,126 +48,6 @@ func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error
 		appBaseURL:  appBaseURL,
 		downloadDir: "test",
 	}, nil
-}
-
-//wake up heroku server
-func WakeUp(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello World")
-}
-func SendMessage(message string) {
-	app, err := NewLineBot(
-		os.Getenv("ChannelSecret"),
-		os.Getenv("ChannelAccessToken"),
-		os.Getenv("APP_BASE_URL"),
-	)
-	if err != nil {
-		fmt.Println(err)
-	}
-	session, errs := mgo.Dial(os.Getenv("DBURL"))
-	if errs != nil {
-		panic(errs)
-	}
-	defer session.Close()
-	c := session.DB("xtest").C("commicuser")
-
-	result := User{}
-	iter := c.Find(nil).Iter()
-	for iter.Next(&result) {
-		if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage(message)).Do(); err != nil {
-		}
-	}
-
-}
-func FindUpdate() []NewComic {
-	//today's date
-	fmt.Println("STARTING CRAWLER ...")
-	now := time.Now()
-	local1, err1 := time.LoadLocation("")
-	if err1 != nil {
-		fmt.Println(err1)
-	}
-	local2, err2 := time.LoadLocation("Asia/Chongqing")
-	if err2 != nil {
-		fmt.Println(err2)
-	}
-	time_one := now.In(local1)
-	time_two := now.In(local2)
-	fmt.Println(time_one.Format("2006-01-02 15:04:05"))
-	fmt.Println(time_two.Format("2006-01-02 15:04:05"))
-
-	var comics []NewComic
-
-	doc, err := goquery.NewDocument(BaseAddress + "/update")
-	if err != nil {
-		fmt.Println(err)
-		fmt.Println("ERROR SHOWS UP")
-	}
-
-	doc.Find("li").Each(func(i int, s *goquery.Selection) {
-		comic := NewComic{}
-		title, existed := s.Find("a.cover").Attr("title")
-		if existed {
-			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
-				fmt.Println("找到關於 " + title + " 的資料")
-				date := s.Find("span.dt").Find("em").Text()
-				// if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
-				if date == "2018-03-20" {
-
-					fmt.Println(title + "在近日內有更新！！")
-					comic.Title = title
-					comic.Date = date
-					href, _ := s.Find("a.cover").Attr("href")
-					comic.Link = GetLink(href)
-					comics = append(comics, comic)
-				}
-			}
-		}
-	})
-	return comics
-
-}
-
-func GetLink(link string) (r string) {
-	doc, err := goquery.NewDocument(BaseAddress + link)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	doc.Find("li.status").Each(func(i int, s *goquery.Selection) {
-		href, existed := s.Find("a").Attr("href")
-		if existed {
-			r = BaseAddress + href
-		}
-	})
-	return r
-
-}
-func countUpdater() {
-	for {
-		CrawlAndSend()
-		count++
-		time.Sleep(600 * time.Second)
-	}
-}
-func CrawlAndSend() {
-	session, errs := mgo.Dial(os.Getenv("DBURL"))
-	if errs != nil {
-		panic(errs)
-	}
-	defer session.Close()
-	c := session.DB("xtest").C("commicdata")
-	var comics = FindUpdate()
-	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
-	for i := 0; i < len(comics); i++ {
-		result := comics[i]
-		err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
-		if err != nil {
-			c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
-			SendMessage(comics[i].Title + "\n" + comics[i].Link)
-		} else {
-			fmt.Println("EXIST ALREADY")
-		}
-	}
 }
 func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 	events, err := app.bot.ParseRequest(r)
@@ -241,6 +120,120 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 
 }
 
+/*Line bot*/
+
+/*爬蟲*/
+
+func countUpdater() {
+	for {
+		CrawlAndSent()
+		count++
+		time.Sleep(600 * time.Second)
+	}
+}
+
+func CrawlAndSent() {
+	fmt.Println("START CRAWL...")
+	now := time.Now()
+	local1, err1 := time.LoadLocation("")
+	if err1 != nil {
+		fmt.Println(err1)
+	}
+	local2, err2 := time.LoadLocation("Asia/Chongqing")
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+	time_one := now.In(local1)
+	time_two := now.In(local2)
+	fmt.Println("CRAWL UPDATE TIME : " + time_one.Format("2006-01-02 15:04:05"))
+	fmt.Println("CRAWL UPDATE TIME_TWO : " + time_two.Format("2006-01-02 15:04:05"))
+
+	var comics []NewComic
+
+	doc, err := goquery.NewDocument(BaseAddress + "/update")
+	if err != nil {
+		fmt.Println("ERROR SHOWS UP")
+		fmt.Println(err)
+	} else {
+		doc.Find("li").Each(func(i int, s *goquery.Selection) {
+			comic := NewComic{}
+			title, existed := s.Find("a.cover").Attr("title")
+			if existed {
+				if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
+					fmt.Println("找到關於 " + title + " 的資料")
+					date := s.Find("span.dt").Find("em").Text()
+					if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
+						fmt.Println(title + "在近日內有更新！！")
+						comic.Title = title
+						comic.Date = date
+						href, _ := s.Find("a.cover").Attr("href")
+						comic.Link = GetLink(href)
+						comics = append(comics, comic)
+					}
+				}
+			}
+		})
+	}
+
+	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
+	//有最新更新時, 檢查DB是否已經存在
+	if strconv.Itoa(len(comics)) != 0 {
+		session, errs := mgo.Dial(os.Getenv("DBURL"))
+		if errs != nil {
+			panic(errs)
+		}
+		defer session.Close()
+		c := session.DB("xtest").C("commicdata")
+		c2 := session.DB("xtest").C("commicuser")
+		for i := 0; i < len(comics); i++ {
+			result := comics[i]
+			err := c.Find(bson.M{"link": comics[i].Link}).One(&result)
+			if err != nil {
+				//新的連載,放入DB
+				c.Insert(&NewComic{comics[i].Title, comics[i].Link, comics[i].Date})
+				//發送至群組
+				app, err := NewLineBot(
+					os.Getenv("ChannelSecret"),
+					os.Getenv("ChannelAccessToken"),
+					os.Getenv("APP_BASE_URL"),
+				)
+				if err != nil {
+					fmt.Println(err)
+				}
+				//搜尋所有Line token 並發送訊息
+				result := User{}
+				iter := c2.Find(nil).Iter()
+				for iter.Next(&result) {
+					if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage(message)).Do(); err != nil {
+					}
+				}
+
+				SendMessage(comics[i].Title + "\n" + comics[i].Link)
+			} else {
+				//已經存在DB 故不在重複發送
+				fmt.Println("EXIST ALREADY")
+			}
+		}
+	}
+}
+func GetLink(link string) (r string) {
+	doc, err := goquery.NewDocument(BaseAddress + link)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	doc.Find("li.status").Each(func(i int, s *goquery.Selection) {
+		href, existed := s.Find("a").Attr("href")
+		if existed {
+			r = BaseAddress + href
+		}
+	})
+	return r
+
+}
+
+/*爬蟲*/
+
 func main() {
 	app, err := NewLineBot(
 		os.Getenv("ChannelSecret"),
@@ -258,4 +251,9 @@ func main() {
 
 		fmt.Println(err)
 	}
+}
+
+//wake up heroku server
+func WakeUp(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hello World")
 }
