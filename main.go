@@ -162,6 +162,7 @@ func CrawlAndSent() {
 		if err != nil {
 			fmt.Println("ERROR SHOWS UP")
 			fmt.Println(err)
+			BOOL = false
 		} else {
 			doc.Find("li").Each(func(i int, s *goquery.Selection) {
 				comic := NewComic{}
