@@ -158,16 +158,7 @@ func CrawlAndSent() {
 		} else {
 			queryString = BaseAddress + "/list/update_p" + strconv.Itoa(pageCount) + ".html"
 		}
-		//fake header
-		client := &http.Client{}
-		req, err := http.NewRequest("GET", queryString, nil)
-		req.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
-		req.Header.Add("Referer", queryString)
-		req.Header.Add("Cookie", "your cookie")
-		res, err := client.Do(req)
-		defer res.Body.Close()
-		doc, err := goquery.NewDocumentFromResponse(res)
-		//doc, err := goquery.NewDocument(queryString)
+		doc, err := goquery.NewDocument(queryString)
 		if err != nil {
 			fmt.Println("ERROR SHOWS UP")
 			log.Fatal(err)
@@ -241,16 +232,7 @@ func CrawlAndSent() {
 	}
 }
 func GetLink(link string) (r string) {
-	//fake header
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", BaseAddress+link, nil)
-	req.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
-	req.Header.Add("Referer", BaseAddress+link)
-	req.Header.Add("Cookie", "your cookie")
-	res, err := client.Do(req)
-	defer res.Body.Close()
-	doc, err := goquery.NewDocumentFromResponse(res)
-	//doc, err := goquery.NewDocument(BaseAddress + link)
+	doc, err := goquery.NewDocument(BaseAddress + link)
 	if err != nil {
 		fmt.Println(err)
 	}
