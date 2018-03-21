@@ -79,11 +79,19 @@ func SendMessage(message string) {
 func FindUpdate() []NewComic {
 	//today's date
 	log.Println("STARTING CRAWLER ...")
-	loc, _ := time.LoadLocation("Asia/Chongqing")
-	timeInTimeZone := time.Now().In(loc)
-	timeWithOutTimeZone := time.Now()
-	log.Println("CRAWL TIME : " + timeInTimeZone.Format("2006-01-02 15:04:05"))
-	log.Println("CRAWL TIME IN TIME ZONE : " + timeInTimeZone.Format("2006-01-02 15:04:05"))
+	now := time.Now()
+	local1, err1 := time.LoadLocation("")
+	if err1 != nil {
+		log.Println(err1)
+	}
+	local2, err2 := time.LoadLocation("Asia/Chongqing")
+	if err2 != nil {
+		log.Println(err2)
+	}
+	time_one := now.In(local1)
+	time_two := now.In(local2)
+	log.Println(time_one.Format("2006-01-02 15:04:05"))
+	log.Println(time_two.Format("2006-01-02 15:04:05"))
 
 	var comics []NewComic
 
@@ -99,7 +107,7 @@ func FindUpdate() []NewComic {
 		if existed {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
 				date := s.Find("span.dt").Find("em").Text()
-				if date == timeInTimeZone.Format("2016-01-02") || date == timeWithOutTimeZone.Format("2016-01-02") {
+				if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
 					comic.Title = title
 					comic.Date = date
 					href, _ := s.Find("a.cover").Attr("href")
