@@ -175,7 +175,7 @@ func CrawlAndSent() {
 							fmt.Println(title + "在近日內有更新！！")
 							comic.Title = title
 							comic.Date = result
-							href, _ := s.Find("a.cover").Attr("href")
+							href, _ := s.Find("a.bcover").Attr("href")
 							comic.Link = GetLink(href)
 							comics = append(comics, comic)
 						}
