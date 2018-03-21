@@ -111,7 +111,9 @@ func FindUpdate() []NewComic {
 			if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
 				fmt.Println("找到關於 " + title + " 的資料")
 				date := s.Find("span.dt").Find("em").Text()
-				if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
+				// if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
+				if date == "2018-03-20" {
+
 					fmt.Println(title + "在近日內有更新！！")
 					comic.Title = title
 					comic.Date = date
