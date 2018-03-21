@@ -177,7 +177,7 @@ func CrawlAndSent() {
 
 	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
 	//有最新更新時, 檢查DB是否已經存在
-	if strconv.Itoa(len(comics)) != 0 {
+	if strconv.Itoa(len(comics)) != "0" {
 		session, errs := mgo.Dial(os.Getenv("DBURL"))
 		if errs != nil {
 			panic(errs)
@@ -204,11 +204,10 @@ func CrawlAndSent() {
 				result := User{}
 				iter := c2.Find(nil).Iter()
 				for iter.Next(&result) {
+					message := comics[i]title +"\n"+ comics[i].Link
 					if _, err := app.bot.PushMessage(result.UserID, linebot.NewTextMessage(message)).Do(); err != nil {
 					}
 				}
-
-				SendMessage(comics[i].Title + "\n" + comics[i].Link)
 			} else {
 				//已經存在DB 故不在重複發送
 				fmt.Println("EXIST ALREADY")
