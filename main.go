@@ -139,46 +139,53 @@ func countUpdater() {
 
 func CrawlAndSent() {
 	fmt.Println("START CRAWL...")
+	var BOOL = true
+	var queryString string = ""
+	pageCount := 1
+
 	now := time.Now()
-	local1, err1 := time.LoadLocation("")
+	local1, err1 := time.LoadLocation("Asia/Chongqing")
 	if err1 != nil {
 		fmt.Println(err1)
 	}
-	local2, err2 := time.LoadLocation("Asia/Chongqing")
-	if err2 != nil {
-		fmt.Println(err2)
-	}
 	time_one := now.In(local1)
-	time_two := now.In(local2)
-	fmt.Println("CRAWL UPDATE TIME : " + time_one.Format("2006-01-02 15:04:05"))
-	fmt.Println("CRAWL UPDATE TIME_TWO : " + time_two.Format("2006-01-02 15:04:05"))
 
 	var comics []NewComic
-
-	// doc, err := goquery.NewDocument(BaseAddress + "/update")
-	doc, err := goquery.NewDocument("https://www.ptt.cc/bbs/Beauty/index.html")
-	if err != nil {
-		fmt.Println("ERROR SHOWS UP")
-		fmt.Println(err)
-	} else {
-		doc.Find("li").Each(func(i int, s *goquery.Selection) {
-			comic := NewComic{}
-			title, existed := s.Find("a.cover").Attr("title")
-			if existed {
-				if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
-					fmt.Println("找到關於 " + title + " 的資料")
-					date := s.Find("span.dt").Find("em").Text()
-					if date == time_one.Format("2016-01-02") || date == time_two.Format("2016-01-02") {
-						fmt.Println(title + "在近日內有更新！！")
-						comic.Title = title
-						comic.Date = date
-						href, _ := s.Find("a.cover").Attr("href")
-						comic.Link = GetLink(href)
-						comics = append(comics, comic)
+	for BOOL {
+		if queryString == "" {
+			queryString = BaseAddress + "/list/update.html"
+		} else {
+			queryString = BaseAddress + "/list/update_p" + strconv.Itoa(pageCount) + ".html"
+		}
+		doc, err := goquery.NewDocument(queryString)
+		if err != nil {
+			fmt.Println("ERROR SHOWS UP")
+			fmt.Println(err)
+		} else {
+			doc.Find("li").Each(func(i int, s *goquery.Selection) {
+				comic := NewComic{}
+				title, existed := s.Find("a.bcover").Attr("title")
+				if existed {
+					date := s.Find("span.updateon").Text()
+					result := strings.Replace(date, "更新于：", "", -1)[:10]
+					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
+					if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" {
+						if result == time_one.Format("2006-01-02") {
+							fmt.Println(title + "在近日內有更新！！")
+							comic.Title = title
+							comic.Date = result
+							href, _ := s.Find("a.cover").Attr("href")
+							comic.Link = GetLink(href)
+							comics = append(comics, comic)
+						}
+					}
+					if time_one.Format("2006-01-02") != result {
+						BOOL = false
 					}
 				}
-			}
-		})
+			})
+		}
+		pageCount = pageCount + 1
 	}
 
 	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
