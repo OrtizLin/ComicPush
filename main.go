@@ -155,7 +155,8 @@ func CrawlAndSent() {
 
 	var comics []NewComic
 
-	doc, err := goquery.NewDocument(BaseAddress + "/update")
+	// doc, err := goquery.NewDocument(BaseAddress + "/update")
+	doc, err := goquery.NewDocument("https://www.ptt.cc/bbs/Beauty/index.html")
 	if err != nil {
 		fmt.Println("ERROR SHOWS UP")
 		fmt.Println(err)
