@@ -260,7 +260,6 @@ func main() {
 		fmt.Println(err)
 	}
 	go countUpdater()
-
 	http.HandleFunc("/wakeup", WakeUp)
 	http.HandleFunc("/callback", app.Callback)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
