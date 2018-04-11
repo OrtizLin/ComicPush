@@ -43,6 +43,8 @@ func CheckComicInDB(title, link, date string) bool {
 	c := session.DB("xtest").C("commicdata")
 	err := c.Find(bson.M{"link": link}).One(&result)
 	if err != nil {
+		log.Print("插入資料庫!")
+		log.Print(title, date, link)
 		c.Insert(&NewComic{title, link, date})
 		return false
 	} else {
