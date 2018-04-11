@@ -2,8 +2,10 @@ package bot
 
 import (
 	"ComicNotify/db"
+	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
+	"os"
 )
 
 type LineBot struct {
