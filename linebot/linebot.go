@@ -86,7 +86,16 @@ func (app *LineBotStruct) handleText(message *linebot.TextMessage, replyToken st
 
 }
 
-func PushMessage(userID, message string) {
+func PushMessage(message string) {
+	//c2 := session.DB("xtest").C("commicuser")
+	//搜尋所有Line token 並發送訊息
+	// results := User{}
+	// iter := c2.Find(nil).Iter()
+	// for iter.Next(&results) {
+	// 	message := comics[i].Title + "\n" + comics[i].Link
+	// 	linebot.PushMessage(results.UserID, message)
+	// }
+
 	//發送至群組
 	app, err := NewLineBot(
 		os.Getenv("ChannelSecret"),

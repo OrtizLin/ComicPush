@@ -2,6 +2,7 @@ package crawler
 
 import (
 	"ComicNotify/db"
+	"ComicNotify/linebot"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
@@ -81,7 +82,14 @@ func crawl() {
 	}
 	//有最新更新時, 檢查DB是否已經存在
 	if strconv.Itoa(len(comics)) != "0" {
-		db.CheckAlreadySent(comics)
+		for i := 0; i < len(comics); i++ {
+			if db.CheckAlreadySent(comics[i]) {
+				//已經存在DB 故不在重複發送
+			} else {
+				message := comics[i].Title + "\n" + comics[i].Link
+				linebot.PushMessage(message)
+			}
+		}
 	}
 }
 func getLink(link string) (r string) {
