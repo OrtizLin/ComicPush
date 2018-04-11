@@ -1,17 +1,15 @@
 package crawler
 
 import (
-	"ComicNotify/db"
-	"ComicNotify/linebot"
+	"ComicNotify/bot"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 	"time"
 )
-
-const BaseAddress = "http://www.manhuagui.com"
-
-var count uint64
 
 type NewComic struct {
 	Title string
@@ -19,19 +17,24 @@ type NewComic struct {
 	Date  string
 }
 
+const BaseAddress = "http://www.manhuagui.com"
+
+var count uint64
+
 func Start() {
 	go countUpdater()
 }
+
 func countUpdater() {
 	for {
-		crawl()
+		crawlAndSent()
 		count++
 		time.Sleep(600 * time.Second)
 	}
 }
 
-//Comic crawler
-func crawl() {
+func crawlAndSent() {
+	fmt.Println("START CRAWL...")
 	var BOOL = true
 	var queryString string = ""
 	pageCount := 1
@@ -52,6 +55,7 @@ func crawl() {
 		}
 		doc, err := goquery.NewDocument(queryString)
 		if err != nil {
+			fmt.Println("ERROR SHOWS UP")
 			log.Fatal(err)
 			BOOL = false
 		} else {
@@ -64,6 +68,7 @@ func crawl() {
 					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
 					if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" || title == "排球少年！！" || title == "中華小廚師" {
 						if result == time_one.Format("2006-01-02") {
+							fmt.Println(title + "在近日內有更新！！")
 							comic.Title = title
 							comic.Date = result
 							href, _ := s.Find("a.bcover").Attr("href")
@@ -80,14 +85,16 @@ func crawl() {
 
 		pageCount = pageCount + 1
 	}
+
+	fmt.Println("查到" + strconv.Itoa(len(comics)) + "筆資料")
 	//有最新更新時, 檢查DB是否已經存在
 	if strconv.Itoa(len(comics)) != "0" {
 		for i := 0; i < len(comics); i++ {
-			if db.CheckAlreadySent(comics[i]) {
+			if db.CheckComicInDB(comics[i].Title, comics[i].Link, comics[i].Date) {
 				//已經存在DB 故不在重複發送
 			} else {
-				message := comics[i].Title + "\n" + comics[i].Link
-				linebot.PushMessage(message)
+				str := comics[i].Title + "\n" + comics[i].Link
+				bot.PushMessage(str)
 			}
 		}
 	}
