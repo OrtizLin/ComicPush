@@ -2,10 +2,10 @@ package crawler
 
 import (
 	"ComicNotify/bot"
+	"ComicNotify/db"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 	"time"
