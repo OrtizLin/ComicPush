@@ -14,10 +14,6 @@ type LineBot struct {
 	downloadDir string
 }
 
-type User struct {
-	UserID string
-}
-
 func NewLineBot(channelSecret, channelToken, appBaseURL string) (*LineBot, error) {
 	bot, err := linebot.New(
 		channelSecret,
@@ -44,8 +40,7 @@ func PushMessage(msg string) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var users []User
-	users = db.GetAllUser()
+	users := db.GetAllUser()
 	for i := 0; i < len(users); i++ {
 		if _, err := app.bot.PushMessage(users[i].UserID, linebot.NewTextMessage(msg)).Do(); err != nil {
 		}
