@@ -21,7 +21,7 @@ const BaseAddress = "http://www.manhuagui.com"
 
 var count uint64
 
-func Start() {
+func Start(w http.ResponseWriter, r *http.Request) {
 	go countUpdater()
 }
 
