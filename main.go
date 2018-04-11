@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-/*爬蟲*/
-
 func main() {
 	app, err := bot.NewLineBot(
 		os.Getenv("ChannelSecret"),
