@@ -20,7 +20,7 @@ func main() {
 		fmt.Println(err)
 	}
 	http.HandleFunc("/wakeup", crawler.Start)
-	http.HandleFunc("/callback", app.Callback)
+	http.HandleFunc("/callback", bot.Callback)
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		fmt.Println(err)
 	}

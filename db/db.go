@@ -36,7 +36,7 @@ func GetAllUser() (user []User) {
 func CheckComicInDB(title, link, date string) bool {
 	result := NewComic{}
 	log.Print(title, date, link)
-	session, errs := mgo.Dial(os.Getenv("DBRUL"))
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
 		panic(errs)
 	}
