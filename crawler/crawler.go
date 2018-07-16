@@ -64,6 +64,7 @@ func crawlAndSent() {
 				comic := NewComic{}
 				title, existed := s.Find("a.bcover").Attr("title")
 				if existed {
+
 					date := s.Find("span.updateon").Text()
 					result := strings.Replace(date, "更新于：", "", -1)[:10]
 					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
