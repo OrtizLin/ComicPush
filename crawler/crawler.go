@@ -70,6 +70,7 @@ func crawlAndSent() {
 					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
 					if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" || title == "排球少年！！" || title == "中華小廚師" || title == "七大罪" || title == "亚人" || title == "食戟之灵" {
 						if result == time_one.Format("2006-01-02") {
+
 							fmt.Println(title + "在近日內有更新！！")
 							comic.Title = title
 							comic.Date = result
