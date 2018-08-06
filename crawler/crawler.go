@@ -35,7 +35,6 @@ func countUpdater() {
 }
 
 func crawlAndSent() {
-	fmt.Println("START CRAWL...")
 	var BOOL = true
 	var queryString string = ""
 	pageCount := 1
