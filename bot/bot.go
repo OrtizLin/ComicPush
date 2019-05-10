@@ -95,7 +95,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 
 		if source.UserID == "Ue2c436fe0c9073bb88bf3dfa90b73cef" {
 			db.RegisterComic(message.Text)
-			str = "已加入" + message.Text
+			str = "已加入 " + message.Text
 		}
 
 		if _, err := app.bot.ReplyMessage(

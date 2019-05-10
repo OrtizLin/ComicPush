@@ -77,6 +77,7 @@ func CheckRegisteredComic(comicName string) bool {
 }
 
 func RegisterComic(comicName string) {
+	if CheckRegisteredComic(comicName) == false {
 	comic := RegisteredComic{}
 	comic.ComicName = comicName
 
@@ -91,6 +92,7 @@ func RegisterComic(comicName string) {
 	if errs != nil{
 		log.Print(errs)
 	}
+}
 }
 
 func CheckRegisteredUser(userID string) bool {

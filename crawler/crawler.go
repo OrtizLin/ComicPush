@@ -68,7 +68,6 @@ func crawlAndSent() {
 					result := strings.Replace(date, "更新于：", "", -1)[:10]
 					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
 					if db.CheckRegisteredComic(title) {
-					// if title == "约定的梦幻岛" || title == "一拳超人" || title == "进击的巨人" || title == "ONE PIECE航海王" || title == "Dr.STONE" || title == "猎人" || title == "排球少年！！" {
 						if result == time_one.Format("2006-01-02") {
 
 							fmt.Println(title + "在近日內有更新！！")
