@@ -17,6 +17,10 @@ type User struct {
 	UserID string
 }
 
+type Comic struct {
+	ComicName string
+}
+
 func GetAllUser() (user []User) {
 	var users []User
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
@@ -53,7 +57,26 @@ func CheckComicInDB(title, link, date string) bool {
 	}
 }
 
-func CheckRegistered(userID string) bool {
+func checkRegisteredComic(comicName string) bool {
+	comic := Comic{}
+	comic.comicName = comicName
+
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	c := session.DB("xtext").C("registercomic")
+	err := c.Find(bson.M{"name": comic.comicName}).One(&comic)
+
+	if err != nil {
+		return false // comic is not exist
+	} else { 
+		return true // comic is exist
+	}	
+}
+
+func checkRegisteredUser(userID string) bool {
 	user := User{}
 	user.UserID = userID
 
@@ -64,7 +87,7 @@ func CheckRegistered(userID string) bool {
 	defer session.Close()
 	c := session.DB("xtest").C("commicuser")
 
-	//check if userId exist.
+	//check if userId is exist.
 	err := c.Find(bson.M{"userid": user.UserID}).One(&user)
 	if err != nil {
 		// add to database and send message.

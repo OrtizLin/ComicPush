@@ -87,7 +87,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		}
 	default:
 		str := ""
-		if db.CheckRegistered(source.UserID) {
+		if db.checkRegisteredUser(source.UserID) {
 			str = "您已經訂閱囉！"
 		} else {
 			str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
@@ -99,6 +99,16 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		).Do(); err != nil {
 			return err
 		}
+
+		if source.UserID == "Ue2c436fe0c9073bb88bf3dfa90b73cef" {
+			if _, err := app.bot.ReplyMessage(
+				replyToken,
+				linebot.NewTextMessage("you are the master"),
+			).Do(); errs != nil {
+				return errs
+			}
+		}
+
 	}
 	return nil
 }
