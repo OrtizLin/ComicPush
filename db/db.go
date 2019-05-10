@@ -67,7 +67,7 @@ func CheckRegisteredComic(comicName string) bool {
 	}
 	defer session.Close()
 	c := session.DB("xtext").C("registercomic")
-	err := c.Find(bson.M{"name": comic.ComicName}).One(&comic)
+	err := c.Find(bson.M{"comicname": comic.ComicName}).One(&comic)
 
 	if err != nil {
 		return false // comic is not exist
