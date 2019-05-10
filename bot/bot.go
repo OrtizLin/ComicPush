@@ -93,7 +93,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 			str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
 		}
 
-		if source.UserID == "Ue2c436fe0c9073bb88bf3dfa90b73cef" {
+		if source.UserID == os.Getenv("MASTER_UUID") {
 			db.RegisterComic(message.Text)
 			str = "將 " + message.Text + " 加入資料庫！"
 		}
