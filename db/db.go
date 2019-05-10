@@ -17,7 +17,7 @@ type User struct {
 	UserID string
 }
 
-type Comic struct {
+type RegisteredComic struct {
 	ComicName string
 }
 
@@ -58,7 +58,7 @@ func CheckComicInDB(title, link, date string) bool {
 }
 
 func checkRegisteredComic(comicName string) bool {
-	comic := Comic{}
+	comic := RegisteredComic{}
 	comic.comicName = comicName
 
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
