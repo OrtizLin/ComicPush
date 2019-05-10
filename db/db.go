@@ -76,6 +76,23 @@ func CheckRegisteredComic(comicName string) bool {
 	}	
 }
 
+func RegisterComic(comicName string) {
+	comic := RegisteredComic{}
+	comic.ComicName = comicName
+
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	c := session.DB("xtest").C("registercomic")
+
+	errs = c.Insert(&RegisteredComic{comic.ComicName})
+	if errs != nil{
+		log.Print(err)
+	}
+}
+
 func CheckRegisteredUser(userID string) bool {
 	user := User{}
 	user.UserID = userID
