@@ -101,7 +101,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		}
 
 		if source.UserID == "Ue2c436fe0c9073bb88bf3dfa90b73cef" {
-			if _, err := app.bot.ReplyMessage(
+			if _, errs := app.bot.ReplyMessage(
 				replyToken,
 				linebot.NewTextMessage("you are the master"),
 			).Do(); errs != nil {
