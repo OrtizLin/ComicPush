@@ -57,7 +57,7 @@ func CheckComicInDB(title, link, date string) bool {
 	}
 }
 
-func checkRegisteredComic(comicName string) bool {
+func CheckRegisteredComic(comicName string) bool {
 	comic := RegisteredComic{}
 	comic.ComicName = comicName
 
