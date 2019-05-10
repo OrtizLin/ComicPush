@@ -59,7 +59,7 @@ func CheckComicInDB(title, link, date string) bool {
 
 func checkRegisteredComic(comicName string) bool {
 	comic := RegisteredComic{}
-	comic.comicName = comicName
+	comic.ComicName = comicName
 
 	session, errs := mgo.Dial(os.Getenv("DBURL"))
 	if errs != nil {
@@ -67,7 +67,7 @@ func checkRegisteredComic(comicName string) bool {
 	}
 	defer session.Close()
 	c := session.DB("xtext").C("registercomic")
-	err := c.Find(bson.M{"name": comic.comicName}).One(&comic)
+	err := c.Find(bson.M{"name": comic.ComicName}).One(&comic)
 
 	if err != nil {
 		return false // comic is not exist
