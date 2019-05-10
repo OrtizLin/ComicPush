@@ -87,7 +87,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 		}
 	default:
 		str := ""
-		if db.checkRegisteredUser(source.UserID) {
+		if db.CheckRegisteredUser(source.UserID) {
 			str = "您已經訂閱囉！"
 		} else {
 			str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"

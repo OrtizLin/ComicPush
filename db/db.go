@@ -76,7 +76,7 @@ func checkRegisteredComic(comicName string) bool {
 	}	
 }
 
-func checkRegisteredUser(userID string) bool {
+func CheckRegisteredUser(userID string) bool {
 	user := User{}
 	user.UserID = userID
 
