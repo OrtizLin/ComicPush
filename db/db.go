@@ -89,7 +89,7 @@ func RegisterComic(comicName string) {
 
 	errs = c.Insert(&RegisteredComic{comic.ComicName})
 	if errs != nil{
-		log.Print(err)
+		log.Print(errs)
 	}
 }
 
