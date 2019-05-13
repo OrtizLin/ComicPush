@@ -68,10 +68,10 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 					log.Print(err)
 				}
 			default:
-			app.UserRegister(event.replyToken, event.source)
+			app.UserRegister("", event.replyToken, event.source)
 			}
 		default:
-			app.UserRegister(event.replyToken, event.source)	
+			app.UserRegister("", event.replyToken, event.source)	
 			}
 	}
 }
@@ -86,12 +86,12 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 			return err
 		}
 	default:
-		app.UserRegister(replyToken, source)
+		app.UserRegister(message, replyToken, source)
 	}
 	return nil
 }
 
-func (app *LineBot) UserRegister(replyToken string, source *linebot.EventSource) error {
+func (app *LineBot) UserRegister(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	
 	str := ""
 	if db.CheckRegisteredUser(source.UserID) {
@@ -100,7 +100,7 @@ func (app *LineBot) UserRegister(replyToken string, source *linebot.EventSource)
 		str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
 	}
 
-	if source.UserID == os.Getenv("MASTER_UUID") {
+	if source.UserID == os.Getenv("MASTER_UUID") && message.Text != ""{
 		db.RegisterComic(message.Text)
 		str = "將 " + message.Text + " 加入資料庫！"
 	}
