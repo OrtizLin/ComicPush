@@ -86,12 +86,12 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 			return err
 		}
 	default:
-		app.UserRegister(message, replyToken, source)
+		app.UserRegister(message.Text, replyToken, source)
 	}
 	return nil
 }
 
-func (app *LineBot) UserRegister(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
+func (app *LineBot) UserRegister(message string, replyToken string, source *linebot.EventSource) error {
 	
 	str := ""
 	if db.CheckRegisteredUser(source.UserID) {
@@ -101,8 +101,8 @@ func (app *LineBot) UserRegister(message *linebot.TextMessage, replyToken string
 	}
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message.Text != ""{
-		db.RegisterComic(message.Text)
-		str = "將 " + message.Text + " 加入資料庫！"
+		db.RegisterComic(message)
+		str = "將 " + message + " 加入資料庫！"
 	}
 
 	if _, err := app.bot.ReplyMessage(
