@@ -100,7 +100,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 		str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
 	}
 
-	if source.UserID == os.Getenv("MASTER_UUID") && message.Text != "" {
+	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
 		db.RegisterComic(message)
 		str = "將 " + message + " 加入資料庫！"
 	}
