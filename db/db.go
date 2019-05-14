@@ -69,7 +69,7 @@ func PrintRegistered() string {
  	
  	str := ""
 	for i := 0; i < len(results); i++ {
-		str += results[i].comicName + " ,"
+		str += results[i].ComicName + " ,"
 	}
 	return str
 
