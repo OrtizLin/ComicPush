@@ -68,7 +68,7 @@ func PrintRegistered() string {
 	err := c.Find(nil).All(&results)
  	
  	str := ""
-	for i := 0 i < len(results); i++ {
+	for i := 0; i < len(results); i++ {
 		str += results[i].comicName + " ,"
 	}
 	return str
