@@ -16,6 +16,10 @@ Once comic update , bot will send you a link.
 
 ![螢幕快照 2018-03-22 下午5.33.38](https://i.imgur.com/UFtngZR.png)
 
+# New feature
+
+Now , user can input '查詢' to know what comics is registered now.
+
 # Others
 
 ```
