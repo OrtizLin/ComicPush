@@ -18,7 +18,7 @@ Once comic update , bot will send you a link.
 
 # New feature
 
-Now , user can input '查詢' to know what comics is registered now.
+Now , user can input ' 查詢 ' to know what comics are registered now.
 
 # Others
 
