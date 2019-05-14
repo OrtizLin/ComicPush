@@ -66,7 +66,9 @@ func PrintRegistered() string {
 	defer session.Close()
 	c := session.DB("xtest").C("registercomic")
 	err := c.Find(nil).All(&results)
- 	
+ 	if err != nil {
+		panic(errs)
+	}
  	str := ""
 	for i := 0; i < len(results); i++ {
 		str += results[i].ComicName + " ,"
