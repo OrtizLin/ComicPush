@@ -78,10 +78,12 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 
 func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
-	case "tonygrr":
+	case "查詢":
+		str := db.PrintRegistered()
+		replymessage := "目前加入的漫畫有 : " + str
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
-			linebot.NewTextMessage("嫩！"),
+			linebot.NewTextMessage(replymessage),
 		).Do(); err != nil {
 			return err
 		}

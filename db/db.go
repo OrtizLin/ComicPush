@@ -57,6 +57,24 @@ func CheckComicInDB(title, link, date string) bool {
 	}
 }
 
+func PrintRegistered() string {
+	var results []RegisteredComic
+	session, errs := mgo.Dial(os.Getenv("DBURL"))
+	if errs != nil {
+		panic(errs)
+	}
+	defer session.Close()
+	c := session.DB("xtest").C("registercomic")
+	err := c.Find(nil).All(&results)
+ 	
+ 	str := ""
+	for i := 0 i < len(results); i++ {
+		str += results.comicName + " ,"
+	}
+	return str
+
+}
+
 func CheckRegisteredComic(comicName string) bool {
 	comic := RegisteredComic{}
 	comic.ComicName = comicName
