@@ -68,11 +68,11 @@ func (app *LineBot) Callback(w http.ResponseWriter, r *http.Request) {
 					log.Print(err)
 				}
 			default:
-			app.UserRegister("", event.ReplyToken, event.Source)
+				app.UserRegister("", event.ReplyToken, event.Source)
 			}
 		default:
-			app.UserRegister("", event.ReplyToken, event.Source)	
-			}
+			app.UserRegister("", event.ReplyToken, event.Source)
+		}
 	}
 }
 
@@ -94,7 +94,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 }
 
 func (app *LineBot) UserRegister(message string, replyToken string, source *linebot.EventSource) error {
-	
+
 	str := ""
 	if db.CheckRegisteredUser(source.UserID) {
 		str = "您已經訂閱囉！"
@@ -104,7 +104,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
 		db.RegisterComic(message)
-		str = "將 " + message + " 加入資料庫！"
+		str = "將 " + message + " 加入資料庫唷！"
 	}
 
 	if _, err := app.bot.ReplyMessage(
@@ -113,6 +113,6 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	).Do(); err != nil {
 		return err
 	}
-return nil
+	return nil
 
 }
