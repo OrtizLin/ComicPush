@@ -1,7 +1,7 @@
 package bot
 
 import (
-	"ComicNotify/db"
+	"comic-push-robot/db"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"

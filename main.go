@@ -1,8 +1,8 @@
 package main
 
 import (
-	"ComicNotify/bot"
-	"ComicNotify/crawler"
+	"comic-push-robot/bot"
+	"comic-push-robot/crawler"
 	"fmt"
 	"net/http"
 	"os"
