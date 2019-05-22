@@ -102,16 +102,17 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 		str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
 	}
 
-	// if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
+	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
 	
-	// 	if db.CheckRegisteredComic(message) {
-	// 		str = message + "已在你的資料庫裡"
-	// 	} else {
-	// 		db.RegisterComic(message)
-	// 		str = "將 " + message + " 加入資料庫！"
-	// 	}
-	// }
-if str == "看看此作者其他的機器人吧！" {
+		if db.CheckRegisteredComic(message) {
+			str = message + "已在你的資料庫裡"
+		} else {
+			db.RegisterComic(message)
+			str = "將 " + message + " 加入資料庫！"
+		}
+	}
+
+	if str == "看看此作者其他的機器人吧！" {
 		var columns []*linebot.CarouselColumn
 
 				column1 := linebot.NewCarouselColumn(
@@ -133,7 +134,7 @@ if str == "看看此作者其他的機器人吧！" {
 				return err
 
 			}
-} else {
+	} else {
 	if _, err := app.bot.ReplyMessage(
 		replyToken,
 		linebot.NewTextMessage(str),
