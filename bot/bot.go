@@ -115,11 +115,11 @@ if str == "看看此作者其他的機器人吧！" {
 		var columns []*linebot.CarouselColumn
 
 				column1 := linebot.NewCarouselColumn(
-					"https://i.imgur.com/aQjMlmV.jpg", "表特爆報", "只要 PTT 表特版上出現爆文，立即通知使用者，讓你不再錯過精彩文章。",
+					"https://i.imgur.com/l3Cdj6B.png", "表特爆報", "只要 PTT 表特版上出現爆文，立即通知使用者，讓你不再錯過精彩文章。",
 					linebot.NewURITemplateAction("立即點我追蹤", "https://line.me/R/ti/p/%40qss3676v"),
 				)
 				column2 := linebot.NewCarouselColumn(
-					"https://i.imgur.com/aQjMlmV.jpg", "空汙爆報", "客製化訂閱你家或工作場所附近的空汙觀測站，於每日8點及下午6點進行空汙推播通知。",
+					"https://i.imgur.com/q7Jq9WK.png", "空汙爆報", "客製化訂閱你家或工作場所附近的空汙觀測站，於每日8點及下午6點進行空汙推播通知。",
 					linebot.NewURITemplateAction("立即點我追蹤", "https://line.me/R/ti/p/%40zhm1865k"),
 				)
 				columns = append(columns, column1)
