@@ -103,8 +103,13 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	}
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
-		db.RegisterComic(message)
-		str = "將 " + message + " 加入資料庫！"
+	
+		if db.CheckRegisteredComic(message) {
+			str = message + "已在你的資料庫裡"
+		} else {
+			db.RegisterComic(message)
+			str = "將 " + message + " 加入資料庫！"
+		}
 	}
 
 	if _, err := app.bot.ReplyMessage(
