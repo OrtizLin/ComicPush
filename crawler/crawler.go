@@ -1,8 +1,8 @@
 package crawler
 
 import (
-	"ComicNotify/bot"
-	"ComicNotify/db"
+	"comic-push-robot/bot"
+	"comic-push-robot/db"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"log"
