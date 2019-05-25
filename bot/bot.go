@@ -141,7 +141,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 		).Do(); err != nil {
 			return err
 		}
-		return nil
-
 	}
+
+	return nil
 }
