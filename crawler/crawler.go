@@ -67,7 +67,7 @@ func crawlAndSent() {
 					date := s.Find("span.updateon").Text()
 					result := strings.Replace(date, "更新于：", "", -1)[:10]
 					fmt.Println("找到關於 " + title + " 的資料, 更新時間為 : " + result)
-					if db.CheckRegisteredComic(title) {
+					if db.CheckRegisteredComic(title) == true {
 						if result == time_one.Format("2006-01-02") {
 
 							fmt.Println(title + "在近日內有更新！！")
