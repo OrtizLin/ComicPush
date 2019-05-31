@@ -95,7 +95,7 @@ func (app *LineBot) handleText(message *linebot.TextMessage, replyToken string, 
 
 func (app *LineBot) UserRegister(message string, replyToken string, source *linebot.EventSource) error {
 
-	str := ""
+	//str := ""
 	userID := source.UserID
 	
 	if userID == "" {
@@ -107,21 +107,21 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	}
 	
 	if db.CheckRegisteredUser(userID) {
-		str = "看看此作者其他的機器人吧！"
+		//str = "看看此作者其他的機器人吧！"
 	} else {
-		str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
+		//str = "恭喜您已訂閱連載報報。\n當有最新連載發行時將會第一時間通知您！"
 	}
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
 
 		if db.CheckRegisteredComic(message) {
-			str = message + "已在你的資料庫裡"
+			//str = message + "已在你的資料庫裡"
 		} else {
 			db.RegisterComic(message)
-			str = "將 " + message + " 加入資料庫！"
+			//str = "將 " + message + " 加入資料庫！"
 		}
 	}
-	log.Print(str)
+	//log.Print(str)
 	// if str == "看看此作者其他的機器人吧！" {
 	// 	var columns []*linebot.CarouselColumn
 
