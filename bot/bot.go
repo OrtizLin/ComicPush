@@ -98,11 +98,11 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	str := ""
 	userID := source.UserID
 	
-	if userID == "" || userID == nil {
+	if userID == "" {
 		userID = source.GroupID
 	}
 
-	if userID == "" || userID == nil {
+	if userID == "" {
 		userID = source.RoomID
 	}
 	
