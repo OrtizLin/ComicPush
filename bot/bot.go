@@ -121,7 +121,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 			str = "將 " + message + " 加入資料庫！"
 		}
 	}
-
+	log.Print(str)
 	// if str == "看看此作者其他的機器人吧！" {
 	// 	var columns []*linebot.CarouselColumn
 
