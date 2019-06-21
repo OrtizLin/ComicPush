@@ -125,8 +125,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 			).Do(); err != nil {
 				return err
 			}
-		}
-		else {
+		} else {
 		if db.CheckRegisteredComic(message) {
 			//str = message + "已在你的資料庫裡"
 		} else {
