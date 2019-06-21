@@ -114,6 +114,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
 		if message == "test" {
+			log.Print("123")
 			if _, err := app.bot.ReplyMessage(
 				replyToken,
 				linebot.NewImagemapMessage(
@@ -123,9 +124,13 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 					linebot.NewURIImagemapAction("https://www.yahoo.com.tw", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
 				),
 			).Do(); err != nil {
+
+			log.Print("456")
 				return err
 			}
 		} else {
+
+			log.Print("789")
 		if db.CheckRegisteredComic(message) {
 			//str = message + "已在你的資料庫裡"
 		} else {
@@ -158,12 +163,12 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 
 	// 	}
 	// } else {
-	// 	if _, err := app.bot.ReplyMessage(
-	// 		replyToken,
-	// 		linebot.NewTextMessage(str),
-	// 	).Do(); err != nil {
-	// 		return err
-	// 	}
+		// if _, err := app.bot.ReplyMessage(
+		// 	replyToken,
+		// 	linebot.NewTextMessage(str),
+		// ).Do(); err != nil {
+		// 	return err
+		// }
 	// }
 
 	return nil
