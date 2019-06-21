@@ -119,7 +119,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 				linebot.NewImagemapMessage(
 					"https://i.imgur.com/ITTfpLC.png",
 					"Try this giant image",
-					linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
+					linebot.ImagemapBaseSize{Width: 1040, Height: 2080},
 					linebot.NewURIImagemapAction("https://www.yahoo.com.tw", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
 				),
 			).Do(); err != nil {
