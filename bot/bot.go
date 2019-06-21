@@ -113,18 +113,20 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	}
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
-		if message == "test" {
-			if _, err := app.bot.ReplyMessage(
-				replyToken,
-				linebot.NewImagemapMessage(
+		if message == "test" { // Test giant image nessage.
+
+
+		users := db.GetAllUser()
+		for i := 0; i < len(users); i++ {
+			if _, err := app.bot.PushMessage(users[i].UserID, linebot.NewImagemapMessage(
 					"https://i.imgur.com/ITTfpLC.png",
 					"Try this giant image",
 					linebot.ImagemapBaseSize{Width: 1040, Height: 2080},
-					linebot.NewURIImagemapAction("https://www.yahoo.com.tw", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
+					linebot.NewURIImagemapAction("https://www.manhuagui.com/", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
 				),
 			).Do(); err != nil {
-				return err
 			}
+		}
 		} else {
 		if db.CheckRegisteredComic(message) {
 			//str = message + "已在你的資料庫裡"
