@@ -113,13 +113,27 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	}
 
 	if source.UserID == os.Getenv("MASTER_UUID") && message != "" {
-
+		if message == "test" {
+				if _, err := app.bot.ReplyMessage(
+				replyToken,
+				linebot.NewImagemapMessage(
+					app.appBaseURL+"/static/rich",
+					"Check this new message",
+					linebot.ImagemapBaseSize{Width: 1040, Height: 2080},
+					linebot.NewURIImagemapAction("https://www.yahoo.com.tw", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
+				)
+			).Do(); err != nil {
+				return err
+			}
+		}
+		else {
 		if db.CheckRegisteredComic(message) {
 			//str = message + "已在你的資料庫裡"
 		} else {
 			db.RegisterComic(message)
 			//str = "將 " + message + " 加入資料庫！"
 		}
+	}
 	}
 	//log.Print(str)
 	// if str == "看看此作者其他的機器人吧！" {
