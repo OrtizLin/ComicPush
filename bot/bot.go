@@ -117,7 +117,7 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 			if _, err := app.bot.ReplyMessage(
 				replyToken,
 				linebot.NewImagemapMessage(
-					"",
+					"https://i.imgur.com/ITTfpLC.png",
 					"Try this giant image",
 					linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 					linebot.NewURIImagemapAction("https://www.yahoo.com.tw", linebot.ImagemapArea{X: 0, Y: 0, Width: 1040, Height: 2080}),
