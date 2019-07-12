@@ -169,5 +169,6 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 	// }
 
 	//IMPLEMENT NEW FEATURE
+	//KEEP IMPLEMENT NEW FEATURE
 	return nil
 }
