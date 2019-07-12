@@ -136,6 +136,9 @@ func (app *LineBot) UserRegister(message string, replyToken string, source *line
 		}
 	}
 	}
+
+	//THERE IS NEW BUG NEED TO FIX
+	
 	//log.Print(str)
 	// if str == "看看此作者其他的機器人吧！" {
 	// 	var columns []*linebot.CarouselColumn
