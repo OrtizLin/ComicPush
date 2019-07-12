@@ -23,5 +23,3 @@ func main() {
 		fmt.Println(err)
 	}
 
-// I Need To fix this bug.
-// I neew to implement new feature
